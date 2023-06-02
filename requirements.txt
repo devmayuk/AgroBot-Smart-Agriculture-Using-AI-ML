@@ -16,7 +16,7 @@ colorama==0.4.6
 cryptography==39.0.2
 filelock==3.9.0
 filetype==1.0.7
-Flask==2.3.2
+Flask==2.2.5
 flatbuffers==23.1.21
 frozendict==2.3.5
 gast==0.4.0
