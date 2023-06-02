@@ -2,8 +2,8 @@ numpy
 pandas
 Flask
 scikit-learn
-https://download.pytorch.org/whl/cu118/torch-2.0.0%2Bcu118-cp36-cp36m-win_amd64.whl
-https://download.pytorch.org/whl/cu118/torchvision-0.8.1%2Bcu118-cp36-cp36m-win_amd64.whl
+torch==1.9.0+cu111
+torchvision==0.10.0+cu111
 requests
 Pillow
 gunicorn == 20.0.4
