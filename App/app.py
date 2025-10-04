@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, redirect
 from markupsafe import Markup
 import numpy as np
 import pandas as pd
-from pathlib import Path
 try:
     from App.utils.disease import disease_dic
     from App.utils.fertilizer import fertilizer_dic
