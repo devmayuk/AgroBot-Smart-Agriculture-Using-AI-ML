@@ -231,7 +231,8 @@ def fert_recommend():
     K = int(request.form['pottasium'])
     # ph = float(request.form['ph'])
 
-    df = pd.read_csv('Data/fertilizer.csv')
+    fertilizer_csv = Path(__file__).resolve().parents[1] / 'Data' / 'fertilizer.csv'
+    df = pd.read_csv(fertilizer_csv)
 
     crop_requirements = df[df['Crop'] == crop_name]
     if crop_requirements.empty:
