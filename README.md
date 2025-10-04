@@ -9,4 +9,4 @@ manual labor. This research emphasizes the relevance of precision farming and th
 ## Deployment Notes
 
 - The Render deployment now uses Python 3.10 (see `runtime.txt`) because Python 3.7 is end-of-life and no longer supported by Render's default builders.
-- The Gunicorn entrypoint now targets the `App.app` module directly so the worker starts correctly when Render runs the Procfile from the repository root.
+- The Gunicorn entrypoint now uses `gunicorn --chdir App app:app` so the worker starts correctly when Render runs the Procfile from the repository root.
