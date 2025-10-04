@@ -3,6 +3,7 @@ pandas
 Flask
 scikit-learn
 torch==1.13.1
+torchvision==0.14.1
 requests
 Pillow
 gunicorn == 20.0.4
