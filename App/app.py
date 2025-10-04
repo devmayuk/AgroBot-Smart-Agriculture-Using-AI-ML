@@ -11,8 +11,9 @@ import pickle
 import io
 import torch
 from torchvision import transforms
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from utils.model import ResNet9
+from requests import RequestException
 # # ============================================================================================
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
@@ -87,17 +88,29 @@ def weather_fetch(city_name):
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name
-    response = requests.get(complete_url)
+    try:
+        response = requests.get(complete_url, timeout=10)
+        response.raise_for_status()
+    except RequestException:
+        return None
+
     x = response.json()
 
-    if x["cod"] != "404":
-        y = x["main"]
-
-        temperature = round((y["temp"] - 273.15), 2)
-        humidity = y["humidity"]
-        return temperature, humidity
-    else:
+    if x.get("cod") == "404":
         return None
+
+    main_block = x.get("main")
+    if not main_block:
+        return None
+
+    temperature = main_block.get("temp")
+    humidity = main_block.get("humidity")
+
+    if temperature is None or humidity is None:
+        return None
+
+    temperature_celsius = round((temperature - 273.15), 2)
+    return temperature_celsius, humidity
 
 
 def predict_image(img, model=disease_model):
@@ -110,14 +123,20 @@ def predict_image(img, model=disease_model):
         transforms.Resize(256),
         transforms.ToTensor(),
     ])
-    image = Image.open(io.BytesIO(img))
+    try:
+        image = Image.open(io.BytesIO(img))
+    except (UnidentifiedImageError, OSError):
+        return None
+
     img_t = transform(image)
     img_u = torch.unsqueeze(img_t, 0)
 
     # Get predictions from model
-    yb = model(img_u)
-    # Pick index with highest probability
-    _, preds = torch.max(yb, dim=1)
+    with torch.no_grad():
+        yb = model(img_u)
+        # Pick index with highest probability
+        _, preds = torch.max(yb, dim=1)
+
     prediction = disease_classes[preds[0].item()]
     # Retrieve the class label
     return prediction
@@ -179,8 +198,9 @@ def crop_prediction():
         # state = request.form.get("stt")
         city = request.form.get("city")
 
-        if weather_fetch(city) != None:
-            temperature, humidity = weather_fetch(city)
+        weather = weather_fetch(city)
+        if weather is not None:
+            temperature, humidity = weather
             data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
             my_prediction = crop_recommendation_model.predict(data)
             final_prediction = my_prediction[0]
@@ -206,15 +226,20 @@ def fert_recommend():
 
     df = pd.read_csv('Data/fertilizer.csv')
 
-    nr = df[df['Crop'] == crop_name]['N'].iloc[0]
-    pr = df[df['Crop'] == crop_name]['P'].iloc[0]
-    kr = df[df['Crop'] == crop_name]['K'].iloc[0]
+    crop_requirements = df[df['Crop'] == crop_name]
+    if crop_requirements.empty:
+        error_message = Markup("We could not find fertilizer data for the selected crop. Please try another crop.")
+        return render_template('fertilizer-result.html', recommendation=error_message, title=title)
+
+    nr = crop_requirements['N'].iloc[0]
+    pr = crop_requirements['P'].iloc[0]
+    kr = crop_requirements['K'].iloc[0]
 
     n = nr - N
     p = pr - P
     k = kr - K
-    temp = {abs(n): "N", abs(p): "P", abs(k): "K"}
-    max_value = temp[max(temp.keys())]
+    differences = [(abs(n), "N"), (abs(p), "P"), (abs(k), "K")]
+    max_value = max(differences, key=lambda item: item[0])[1]
     if max_value == "N":
         if n < 0:
             key = 'NHigh'
@@ -248,15 +273,21 @@ def disease_prediction():
         file = request.files.get('file')
         if not file:
             return render_template('disease.html', title=title)
-        try:
-            img = file.read()
+        img = file.read()
 
-            prediction = predict_image(img)
+        prediction_key = predict_image(img)
 
-            prediction = Markup(str(disease_dic[prediction]))
-            return render_template('disease-result.html', prediction=prediction, title=title)
-        except:
-            pass
+        if not prediction_key:
+            error_message = Markup("We were unable to process the uploaded image. Please try again with a clear plant image.")
+            return render_template('disease.html', title=title, error=error_message)
+
+        disease_description = disease_dic.get(prediction_key)
+        if disease_description is None:
+            error_message = Markup("We could not find details for the predicted disease. Please try again later.")
+            return render_template('disease.html', title=title, error=error_message)
+
+        prediction = Markup(str(disease_description))
+        return render_template('disease-result.html', prediction=prediction, title=title)
     return render_template('disease.html', title=title)
 
 
