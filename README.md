@@ -5,3 +5,8 @@ make predictions about weather conditions, soil types, and crop types. This pape
 aim of achieving smart farming. The proposed work helps farmers to manage crops and harvest in a smart way, guiding them for efficient cultivation and achieving
 high productivity at a low cost. The paper provides an integrated solution for farming, which helps farmers to pre-plan activities before cultivation and reduce
 manual labor. This research emphasizes the relevance of precision farming and the application of sophisticated technology to boost agricultural output.
+
+## Deployment Notes
+
+- The Render deployment now uses Python 3.10 (see `runtime.txt`) because Python 3.7 is end-of-life and no longer supported by Render's default builders.
+- The Gunicorn entrypoint now uses `gunicorn --chdir App app:app` so the worker starts correctly when Render runs the Procfile from the repository root.
