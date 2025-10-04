@@ -25,6 +25,24 @@ from requests import RequestException
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
 
+# Resolve important filesystem locations irrespective of the working directory
+APP_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = APP_DIR.parent
+
+
+def _resolve_under_app_or_root(*relative_parts: str) -> Path:
+    """Return the first matching path under App/ or the project root."""
+    candidates = (
+        APP_DIR.joinpath(*relative_parts),
+        PROJECT_ROOT.joinpath(*relative_parts),
+    )
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    # default to the App-relative path so downstream errors highlight the expected location
+    return candidates[0]
+
+
 # Loading plant disease classification model
 
 disease_classes = ['Apple___Apple_scab',
@@ -66,7 +84,7 @@ disease_classes = ['Apple___Apple_scab',
                    'Tomato___Tomato_mosaic_virus',
                    'Tomato___healthy']
 
-disease_model_path = 'models/plant_disease_model.pth'
+disease_model_path = _resolve_under_app_or_root('models', 'plant_disease_model.pth')
 disease_model = ResNet9(3, len(disease_classes))
 disease_model.load_state_dict(torch.load(
     disease_model_path, map_location=torch.device('cpu')))
@@ -75,7 +93,7 @@ disease_model.eval()
 
 # Loading crop recommendation model
 
-crop_recommendation_model_path = 'models/RandomForest.pkl'
+crop_recommendation_model_path = _resolve_under_app_or_root('models', 'RandomForest.pkl')
 crop_recommendation_model = pickle.load(
     open(crop_recommendation_model_path, 'rb'))
 
