@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, redirect
 from markupsafe import Markup
 import numpy as np
 import pandas as pd
-from pathlib import Path
 try:
     from App.utils.disease import disease_dic
     from App.utils.fertilizer import fertilizer_dic
@@ -250,7 +249,7 @@ def fert_recommend():
     K = int(request.form['pottasium'])
     # ph = float(request.form['ph'])
 
-    fertilizer_csv = _resolve_under_app_or_root('Data', 'fertilizer.csv')
+    fertilizer_csv = Path(__file__).resolve().parents[1] / 'Data' / 'fertilizer.csv'
     df = pd.read_csv(fertilizer_csv)
 
     crop_requirements = df[df['Crop'] == crop_name]
