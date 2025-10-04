@@ -1,18 +1,25 @@
 # Importing essential libraries and modules
 
-from flask import Flask, render_template, request, Markup, redirect
+from flask import Flask, render_template, request, redirect
+from markupsafe import Markup
 import numpy as np
 import pandas as pd
-from utils.disease import disease_dic
-from utils.fertilizer import fertilizer_dic
+try:
+    from App.utils.disease import disease_dic
+    from App.utils.fertilizer import fertilizer_dic
+    from App.utils.model import ResNet9
+    from App import config
+except ModuleNotFoundError:  # pragma: no cover - fallback for script execution
+    from utils.disease import disease_dic
+    from utils.fertilizer import fertilizer_dic
+    from utils.model import ResNet9
+    import config
 import requests
-import config
 import pickle
 import io
 import torch
 from torchvision import transforms
 from PIL import Image, UnidentifiedImageError
-from utils.model import ResNet9
 from requests import RequestException
 # # ============================================================================================
 
