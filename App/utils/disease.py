@@ -180,14 +180,6 @@ disease_dic = {
         <br/><br/> Don't worry. Your crop is healthy. Keep it up !!!""",
 
 
-    'Corn_(maize)___healthy': """ <b>Crop</b>: Corn(maize) <br/>Disease: No disease<br/>
-
-        <br/><br/> Don't worry. Your crop is healthy. Keep it up !!!""",
-
-
-    'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)': """<b> Crop</b> : Grape <br/> Disease: Leaf Spot""",
-
-
     'Orange___Haunglongbing_(Citrus_greening)': """ <b>Crop</b>: Orange <br/>Disease: Citrus Greening<br/>
         <br/> Cause of disease:
 
