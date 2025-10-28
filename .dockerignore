@@ -1,0 +1,46 @@
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.venv
+venv
+env
+
+# Git
+.git
+.gitignore
+
+# IDEs
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks
+notebooks/
+*.ipynb
+
+# Data processing
+Data-raw/
+Data-processed/
+
+# Documentation
+*.md
+README.md
+
+# Fly.io
+.fly
+
+# Render
+render.yaml
