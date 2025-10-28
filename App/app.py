@@ -438,11 +438,19 @@ def disease_prediction():
             logger.error("Disease prediction attempted but model is not loaded")
             return render_template('disease.html', title=title, error=error_message)
 
+        # Validate file upload
         if 'file' not in request.files:
-            return redirect(request.url)
+            error_message = Markup("No file uploaded. Please select an image file.")
+            logger.warning("Disease prediction attempted without file upload")
+            return render_template('disease.html', title=title, error=error_message)
+
         file = request.files.get('file')
-        if not file:
-            return render_template('disease.html', title=title)
+        valid, error = validate_file_upload(file)
+        if not valid:
+            error_message = Markup(error)
+            logger.warning(f"File validation failed: {error}")
+            return render_template('disease.html', title=title, error=error_message)
+
         img = file.read()
 
         prediction_key = predict_image(img)
