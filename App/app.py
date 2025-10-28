@@ -95,9 +95,17 @@ disease_classes = ['Apple___Apple_scab',
 
 disease_model_path = _resolve_under_app_or_root('models', 'plant_disease_model.pth')
 disease_model = ResNet9(3, len(disease_classes))
-disease_model.load_state_dict(torch.load(
-    disease_model_path, map_location=torch.device('cpu')))
-disease_model.eval()
+try:
+    disease_model.load_state_dict(torch.load(
+        disease_model_path, map_location=torch.device('cpu')))
+    disease_model.eval()
+    logger.info("Disease model loaded successfully")
+except FileNotFoundError:
+    disease_model = None
+    logger.warning(f"Disease model file not found at {disease_model_path}. Disease detection feature will be unavailable.")
+except Exception as e:
+    disease_model = None
+    logger.error(f"Failed to load disease model: {e}")
 
 
 # Loading crop recommendation model
