@@ -164,16 +164,19 @@ disease_dic = {
     'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)': """ <b>Crop</b>: Grape <br/>Disease: Leaf Blight<br/>
         <br/> Cause of disease:
 
-        <br/><br/> 1. Apple scab overwinters primarily in fallen leaves and in the soil. Disease development is favored by wet, cool weather that generally occurs in spring and early summer.
+        <br/><br/> 1. Isariopsis leaf spot (also called leaf blight) is caused by the fungus Pseudocercospora vitis (formerly Isariopsis clavispora).
 
-        <br/> 2. Fungal spores are carried by wind, rain or splashing water from the ground to flowers, leaves or fruit. During damp or rainy periods, newly opening apple leaves are extremely susceptible to infection. The longer the leaves remain wet, the more severe the infection will be. Apple scab spreads rapidly between 55-75 degrees Fahrenheit.
+        <br/> 2. The disease affects grape leaves, starting with tiny angular chlorotic (yellow-green) spots that later develop into large, dark brown to black irregular spots. The spots may have a yellow halo around them.
+
+        <br/> 3. The disease is favored by warm, humid conditions and can spread rapidly during wet weather. Spores are spread by wind and splashing water.
+
         <br/><br/> How to prevent/cure the disease <br/>
-        <br/>1. Choose resistant varieties when possible.
+        <br/>1. Maintain good air circulation by properly spacing vines and pruning to reduce humidity around leaves.
 
-        <br/>2. Rake under trees and destroy infected leaves to reduce the number of fungal spores available to start the disease cycle over again next spring
-        
-        <br/>3. Water in the evening or early morning hours (avoid overhead irrigation) to give the leaves time to dry out before infection can occur.
-        <br/>4. Spread a 3- to 6-inch layer of compost under trees, keeping it away from the trunk, to cover soil and prevent splash dispersal of the fungal spores.""",
+        <br/>2. Remove and destroy infected leaves to reduce the source of spores for future infections.
+
+        <br/>3. Avoid overhead irrigation; use drip irrigation to keep leaves dry. Water early in the day to allow leaves to dry quickly.
+        <br/>4. Apply copper-based fungicides or other registered fungicides as a preventive measure during periods of warm, humid weather.""",
 
     'Grape___healthy': """ <b>Crop</b>: Grape <br/>Disease: No disease<br/>
 
