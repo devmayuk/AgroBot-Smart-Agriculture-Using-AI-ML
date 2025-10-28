@@ -191,6 +191,47 @@ def predict_image(img, model=disease_model):
     # Retrieve the class label
     return prediction
 
+
+def validate_numeric_input(value, field_name, min_val, max_val):
+    """
+    Validate numeric input fields
+    :params: value, field_name, min_val, max_val
+    :return: (is_valid, error_message, numeric_value)
+    """
+    try:
+        num = float(value) if '.' in str(value) else int(value)
+        if num < min_val or num > max_val:
+            return False, f"{field_name} must be between {min_val} and {max_val}", None
+        return True, None, num
+    except (ValueError, TypeError):
+        return False, f"{field_name} must be a valid number", None
+
+
+def validate_file_upload(file):
+    """
+    Validate uploaded file for disease prediction
+    :params: file
+    :return: (is_valid, error_message)
+    """
+    if not file or not file.filename:
+        return False, "No file selected. Please upload an image."
+
+    # Check file extension
+    allowed_extensions = {'.jpg', '.jpeg', '.png'}
+    file_ext = Path(file.filename).suffix.lower()
+    if file_ext not in allowed_extensions:
+        return False, f"Invalid file type. Please upload a .jpg, .jpeg, or .png file."
+
+    # Check file size (max 10MB)
+    file.seek(0, 2)  # Seek to end
+    file_size = file.tell()
+    file.seek(0)  # Reset to beginning
+    max_size = 10 * 1024 * 1024  # 10MB
+    if file_size > max_size:
+        return False, "File size too large. Maximum size is 10MB."
+
+    return True, None
+
 # ===============================================================================================
 # ------------------------------------ FLASK APP -------------------------------------------------
 
