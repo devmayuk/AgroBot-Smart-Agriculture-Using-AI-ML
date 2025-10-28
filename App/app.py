@@ -324,8 +324,15 @@ def fert_recommend():
 @app.route('/disease-predict', methods=['GET', 'POST'])
 def disease_prediction():
     title = 'AgroBot - Disease Detection'
+    logger.info("Disease prediction requested")
 
     if request.method == 'POST':
+        # Check if model is available
+        if disease_model is None:
+            error_message = Markup("Disease detection is currently unavailable. Model file is missing.")
+            logger.error("Disease prediction attempted but model is not loaded")
+            return render_template('disease.html', title=title, error=error_message)
+
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files.get('file')
