@@ -21,6 +21,7 @@ import torch
 from torchvision import transforms
 from PIL import Image, UnidentifiedImageError
 from requests import RequestException
+from pathlib import Path
 # # ============================================================================================
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
