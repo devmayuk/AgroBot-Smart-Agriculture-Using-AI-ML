@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: agrobot-smart-agriculture
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir App app:app --log-level debug --timeout 120 --workers 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+      - key: WEATHER_API_KEY
+        value: 9d7cde1f6d07ec55650544be1631307e
+    healthCheckPath: /
