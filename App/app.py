@@ -287,14 +287,47 @@ def crop_prediction():
             logger.error("Crop prediction attempted but model is not loaded")
             return render_template('try_again.html', title=title)
 
-        N = int(request.form['nitrogen'])
-        P = int(request.form['phosphorous'])
-        K = int(request.form['pottasium'])
-        ph = float(request.form['ph'])
-        rainfall = float(request.form['rainfall'])
+        # Validate inputs
+        try:
+            # Validate nitrogen
+            valid, error, N = validate_numeric_input(request.form.get('nitrogen', ''), 'Nitrogen', 0, 140)
+            if not valid:
+                logger.warning(f"Validation failed for nitrogen: {error}")
+                return render_template('try_again.html', title=title)
 
-        # state = request.form.get("stt")
-        city = request.form.get("city")
+            # Validate phosphorous
+            valid, error, P = validate_numeric_input(request.form.get('phosphorous', ''), 'Phosphorous', 0, 145)
+            if not valid:
+                logger.warning(f"Validation failed for phosphorous: {error}")
+                return render_template('try_again.html', title=title)
+
+            # Validate potassium
+            valid, error, K = validate_numeric_input(request.form.get('pottasium', ''), 'Potassium', 0, 205)
+            if not valid:
+                logger.warning(f"Validation failed for potassium: {error}")
+                return render_template('try_again.html', title=title)
+
+            # Validate pH
+            valid, error, ph = validate_numeric_input(request.form.get('ph', ''), 'pH', 0, 14)
+            if not valid:
+                logger.warning(f"Validation failed for pH: {error}")
+                return render_template('try_again.html', title=title)
+
+            # Validate rainfall
+            valid, error, rainfall = validate_numeric_input(request.form.get('rainfall', ''), 'Rainfall', 0, 300)
+            if not valid:
+                logger.warning(f"Validation failed for rainfall: {error}")
+                return render_template('try_again.html', title=title)
+
+            # Validate city
+            city = request.form.get("city", "").strip()
+            if not city or len(city) < 2:
+                logger.warning("Validation failed for city: must be at least 2 characters")
+                return render_template('try_again.html', title=title)
+
+        except Exception as e:
+            logger.error(f"Validation error in crop prediction: {e}")
+            return render_template('try_again.html', title=title)
 
         weather = weather_fetch(city)
         if weather is not None:
