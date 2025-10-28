@@ -237,8 +237,15 @@ def fertilizer_recommendation():
 @ app.route('/crop-predict', methods=['POST'])
 def crop_prediction():
     title = 'AgroBot - Crop Recommendation'
+    logger.info("Crop prediction requested")
 
     if request.method == 'POST':
+        # Check if model is available
+        if crop_recommendation_model is None:
+            error_message = Markup("Crop recommendation is currently unavailable. Model file is missing.")
+            logger.error("Crop prediction attempted but model is not loaded")
+            return render_template('try_again.html', title=title)
+
         N = int(request.form['nitrogen'])
         P = int(request.form['phosphorous'])
         K = int(request.form['pottasium'])
