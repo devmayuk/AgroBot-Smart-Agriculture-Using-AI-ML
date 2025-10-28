@@ -111,8 +111,16 @@ except Exception as e:
 # Loading crop recommendation model
 
 crop_recommendation_model_path = _resolve_under_app_or_root('models', 'RandomForest.pkl')
-crop_recommendation_model = pickle.load(
-    open(crop_recommendation_model_path, 'rb'))
+try:
+    crop_recommendation_model = pickle.load(
+        open(crop_recommendation_model_path, 'rb'))
+    logger.info("Crop recommendation model loaded successfully")
+except FileNotFoundError:
+    crop_recommendation_model = None
+    logger.warning(f"Crop recommendation model file not found at {crop_recommendation_model_path}. Crop recommendation feature will be unavailable.")
+except Exception as e:
+    crop_recommendation_model = None
+    logger.error(f"Failed to load crop recommendation model: {e}")
 
 
 # =========================================================================================
