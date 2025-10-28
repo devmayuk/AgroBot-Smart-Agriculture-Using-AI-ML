@@ -22,6 +22,14 @@ from torchvision import transforms
 from PIL import Image, UnidentifiedImageError
 from requests import RequestException
 from pathlib import Path
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 # # ============================================================================================
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
