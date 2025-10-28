@@ -348,12 +348,43 @@ def crop_prediction():
 @ app.route('/fertilizer-predict', methods=['POST'])
 def fert_recommend():
     title = 'AgroBot - Fertilizer Suggestion'
+    logger.info("Fertilizer recommendation requested")
 
-    crop_name = str(request.form['cropname'])
-    N = int(request.form['nitrogen'])
-    P = int(request.form['phosphorous'])
-    K = int(request.form['pottasium'])
-    # ph = float(request.form['ph'])
+    if request.method == 'POST':
+        # Validate inputs
+        try:
+            # Validate crop name
+            crop_name = request.form.get('cropname', '').strip()
+            if not crop_name or len(crop_name) < 2:
+                logger.warning("Validation failed for crop name: must be at least 2 characters")
+                error_message = Markup("Please enter a valid crop name.")
+                return render_template('fertilizer-result.html', recommendation=error_message, title=title)
+
+            # Validate nitrogen
+            valid, error, N = validate_numeric_input(request.form.get('nitrogen', ''), 'Nitrogen', 0, 140)
+            if not valid:
+                logger.warning(f"Validation failed for nitrogen: {error}")
+                error_message = Markup(error)
+                return render_template('fertilizer-result.html', recommendation=error_message, title=title)
+
+            # Validate phosphorous
+            valid, error, P = validate_numeric_input(request.form.get('phosphorous', ''), 'Phosphorous', 0, 145)
+            if not valid:
+                logger.warning(f"Validation failed for phosphorous: {error}")
+                error_message = Markup(error)
+                return render_template('fertilizer-result.html', recommendation=error_message, title=title)
+
+            # Validate potassium
+            valid, error, K = validate_numeric_input(request.form.get('pottasium', ''), 'Potassium', 0, 205)
+            if not valid:
+                logger.warning(f"Validation failed for potassium: {error}")
+                error_message = Markup(error)
+                return render_template('fertilizer-result.html', recommendation=error_message, title=title)
+
+        except Exception as e:
+            logger.error(f"Validation error in fertilizer recommendation: {e}")
+            error_message = Markup("Invalid input provided. Please check your values and try again.")
+            return render_template('fertilizer-result.html', recommendation=error_message, title=title)
 
     fertilizer_csv = Path(__file__).resolve().parents[1] / 'Data' / 'fertilizer.csv'
     df = pd.read_csv(fertilizer_csv)
