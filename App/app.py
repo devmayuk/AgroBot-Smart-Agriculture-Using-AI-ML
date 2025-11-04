@@ -236,7 +236,9 @@ def validate_file_upload(file):
 # ------------------------------------ FLASK APP -------------------------------------------------
 
 
-app = Flask(__name__)
+# Configure Flask to look for templates in the parent directory
+template_dir = Path(__file__).resolve().parent.parent / 'templates'
+app = Flask(__name__, template_folder=str(template_dir))
 
 # render home page
 
