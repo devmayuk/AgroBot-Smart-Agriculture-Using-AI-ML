@@ -1,110 +1,605 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<!-- banner -->
-<section class="banner_w3lspvt" id="home">
-	<div class="csslider infinity" id="slider1">
-	
-				<div class="banner-top">
-					<div class="overlay">
-						<div class="container">
-							<div class="w3layouts-banner-info text-center">
-								<h3 class="text-wh">AgroCare</h3>
-								<h4 class="text-wh mx-auto my-4"><b>Get informed decisions about your farming strategy.</b></h4>
-								<br>
-								<h4 class="text-wh mx-auto my-4"><strong> Here are some questions we'll answer</strong></h4>
-								<p class="text-li mx-auto mt-2">
-									1. What crop to plant here? <br>
-									2. What fertilizer to use? <br>
-									3. Which disease do your crop have?<br>
-									4. How to cure the disease?</p>
-							</div>
-						</div>
-					</div>
-				</div>
-	</div>
-</section>
-<!-- //banner -->
-
-<!-- core values -->
-<section class="core-value py-5">
-	<div class="container py-md-4">
-		<h3 class="heading mb-sm-5 mb-4 text-center"> About Us</h3>
-		<div class="row core-grids">
-			<div class="col-lg-6 core-left">
-				<img src="{{ url_for('static', filename='images/core.jpg') }}" class="img-fluid" alt="" />
-			</div>
-			<div class="col-lg-6 core-right">
-				<h3 class="mt-4">Improving Agriculture, Improving Lives, Cultivating Crops To Make Farmers Increase
-					Profit.</h3>
-				<p class="mt-3">We use state-of-the-art machine learning ,deep learning and IoT technologies to help you
-					guide through
-					the entire farming process. Make informed decisions to understand the demographics of your area,
-					understand the
-					factors that affect your crop and keep them healthy for a super awesome successful yield.</p>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- //core values -->
-
-<!-- Products & Services -->
-<section class="blog py-5">
-	<div class="container py-md-5">
-		<h3 class="heading mb-sm-5 mb-4 text-center"> Our Services</h3>
-		<div class="row blog-grids">
-			<div class="col-lg-4 col-md-6 blog-left mb-lg-0 mb-sm-5 pb-lg-0 pb-5">
-				<img src="{{ url_for('static', filename='images/s3.jpg') }}" class="img-fluid" alt="" />
-				<a href="{{ url_for('crop_recommend') }}">
-					<div class="blog-info">
-
-						<h4>Crop</h4>
-
-						<p class="mt-2"> Recommendation about the type of crops to be cultivated which is best suited
-							for the respective conditions</p>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6 blog-middle mb-lg-0 mb-sm-5 pb-lg-0 pb-md-5">
-				<img src="{{ url_for('static', filename='images/s2.jpg') }}" class="img-fluid" alt="" />
-				<a href="{{ url_for('fertilizer_recommendation') }}">
-					<div class="blog-info">
-						<h4>Fertilizer</h4>
-						<p class="mt-2">Recommendation about the type of fertilizer best suited for the particular soil
-							and the recommended crop</p>
-					</div>
-				</a>
-			</div>
-			<div class="col-lg-4 col-md-6 blog-right mt-lg-0 mt-5 pt-lg-0 pt-md-5">
-
-				<img src="{{ url_for('static', filename='images/s4.jpg') }}" class="img-fluid" alt="">
-
-				<!-- <img src="images/s4.jpg" class="img-fliud" alt="" /> -->
-				<a href="{{ url_for('disease_prediction') }}">
-					<div class="blog-info">
-						<h4>Crop Disease</h4>
-						<p class="mt-2">Predicting the name and causes of crop disease and suggestions to cure it</p>
-					</div>
-				</a>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- //Products & Services -->
-
-
-<!-- Creating custom grid and hover effect
-<section>
-<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-    <div class="hovereffect">
-        <img class="img-responsive" src="images/s2.jpg" alt="">
-        <div class="overlay">
-           <h2>Hover effect 1</h2>
-           <a class="info" href="#">link here</a>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="floating-elements">
+        <div class="floating-element">
+            <i class="fas fa-seedling fa-3x"></i>
+        </div>
+        <div class="floating-element">
+            <i class="fas fa-leaf fa-2x"></i>
+        </div>
+        <div class="floating-element">
+            <i class="fas fa-wheat fa-3x"></i>
+        </div>
+        <div class="floating-element">
+            <i class="fas fa-sun fa-2x"></i>
         </div>
     </div>
-</div> -->
 
-</html>
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <i class="fas fa-seedling me-3"></i>
+                AgroBot
+            </h1>
+            <p class="hero-subtitle">
+                Smart Agriculture Solutions Powered by AI Technology
+            </p>
 
+            <div class="hero-features">
+                <div class="feature-pill">
+                    <i class="fas fa-brain me-2"></i>
+                    AI-Powered Analysis
+                </div>
+                <div class="feature-pill">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Data-Driven Decisions
+                </div>
+                <div class="feature-pill">
+                    <i class="fas fa-globe me-2"></i>
+                    Weather Integration
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a href="#services" class="btn-agro btn-lg me-3">
+                    <i class="fas fa-rocket me-2"></i>
+                    Get Started
+                </a>
+                <a href="#about" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated wave -->
+    <div class="wave-bottom">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,120L48,112C96,104,192,88,288,80C384,72,480,72,576,80C672,88,768,104,864,104C960,104,1056,88,1152,80C1248,72,1344,72,1392,72L1440,72L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z" fill="white"/>
+        </svg>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 fade-in">
+                <div class="about-content">
+                    <h2 class="display-4 fw-bold text-agro-primary mb-4">
+                        Revolutionizing Farming with AI
+                    </h2>
+                    <p class="lead mb-4">
+                        AgroBot leverages cutting-edge machine learning and deep learning technologies
+                        to provide farmers with intelligent, data-driven insights for optimal crop management.
+                    </p>
+                    <div class="features-list">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-microchip text-agro-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Advanced AI Algorithms</h5>
+                                <p class="text-muted mb-0">State-of-the-art ML models for accurate predictions</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-cloud-sun text-agro-secondary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Real-time Weather Data</h5>
+                                <p class="text-muted mb-0">Integrated weather forecasting for precise recommendations</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="feature-icon me-3">
+                                <i class="fas fa-chart-pie text-agro-accent fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Comprehensive Analysis</h5>
+                                <p class="text-muted mb-0">Soil health, crop diseases, and fertilizer optimization</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 fade-in">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1625246333191-1b9fa0a8c8f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                         alt="Smart Agriculture"
+                         class="img-fluid rounded-4 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="services-section">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-4 fw-bold mb-3">Our Smart Solutions</h2>
+            <p class="lead text-muted">
+                Comprehensive agricultural intelligence services to boost your farming success
+            </p>
+        </div>
+
+        <div class="row g-4 stagger-animation">
+            <!-- Crop Recommendation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card">
+                    <div class="service-card-image" style="background-image: url('https://images.unsplash.com/photo-1592982184084-397a9a5f7297?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="service-card-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                    </div>
+                    <div class="service-card-content">
+                        <h3 class="service-card-title">Crop Recommendation</h3>
+                        <p class="service-card-description">
+                            Get personalized crop suggestions based on your soil conditions, climate,
+                            and local weather patterns. Our AI analyzes multiple factors to recommend
+                            the most profitable and sustainable crops for your farm.
+                        </p>
+                        <a href="{{ url_for('crop_recommend') }}" class="service-card-link">
+                            Get Recommendations <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fertilizer Recommendation -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card">
+                    <div class="service-card-image" style="background-image: url('https://images.unsplash.com/photo-1585879261505-f34edd91f2a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="service-card-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                    </div>
+                    <div class="service-card-content">
+                        <h3 class="service-card-title">Fertilizer Suggestion</h3>
+                        <p class="service-card-description">
+                            Optimize your fertilizer usage with precise recommendations based on soil
+                            analysis, crop requirements, and growth stage. Reduce costs while maximizing
+                            crop yield and environmental sustainability.
+                        </p>
+                        <a href="{{ url_for('fertilizer_recommendation') }}" class="service-card-link">
+                            Analyze Soil <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disease Detection -->
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card">
+                    <div class="service-card-image" style="background-image: url('https://images.unsplash.com/photo-1584627859493-a09b8c0d6c8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');">
+                        <div class="service-card-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                    </div>
+                    <div class="service-card-content">
+                        <h3 class="service-card-title">Disease Detection</h3>
+                        <p class="service-card-description">
+                            Early detection of plant diseases using advanced computer vision.
+                            Simply upload a photo of your plant, and our AI will identify potential
+                            diseases and provide treatment recommendations.
+                        </p>
+                        <a href="{{ url_for('disease_prediction') }}" class="service-card-link">
+                            Scan Plant <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-4 fw-bold mb-3">How AgroBot Works</h2>
+            <p class="lead text-muted">
+                Simple steps to transform your farming with AI technology
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="text-center how-it-works-card">
+                    <div class="step-icon mb-3">
+                        <div class="step-number">1</div>
+                        <i class="fas fa-database fa-2x text-agro-primary"></i>
+                    </div>
+                    <h4>Input Data</h4>
+                    <p class="text-muted">
+                        Enter your soil parameters, climate conditions, or upload plant images
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="text-center how-it-works-card">
+                    <div class="step-icon mb-3">
+                        <div class="step-number">2</div>
+                        <i class="fas fa-brain fa-2x text-agro-secondary"></i>
+                    </div>
+                    <h4>AI Analysis</h4>
+                    <p class="text-muted">
+                        Our advanced algorithms process your data using machine learning models
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="text-center how-it-works-card">
+                    <div class="step-icon mb-3">
+                        <div class="step-number">3</div>
+                        <i class="fas fa-chart-line fa-2x text-agro-accent"></i>
+                    </div>
+                    <h4>Get Insights</h4>
+                    <p class="text-muted">
+                        Receive detailed recommendations and actionable insights
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="text-center how-it-works-card">
+                    <div class="step-icon mb-3">
+                        <div class="step-number">4</div>
+                        <i class="fas fa-seedling fa-2x text-success"></i>
+                    </div>
+                    <h4>Optimize Yield</h4>
+                    <p class="text-muted">
+                        Implement recommendations and maximize your agricultural output
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-agro-primary text-white">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="stat-item">
+                    <div class="stat-icon mb-3">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                    <div class="stat-number" data-target="10000">0</div>
+                    <div class="stat-label">Farmers Helped</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="stat-item">
+                    <div class="stat-icon mb-3">
+                        <i class="fas fa-leaf fa-2x"></i>
+                    </div>
+                    <div class="stat-number" data-target="50">0</div>
+                    <div class="stat-label">Crop Varieties</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="stat-item">
+                    <div class="stat-icon mb-3">
+                        <i class="fas fa-percentage fa-2x"></i>
+                    </div>
+                    <div class="stat-number" data-target="95">0</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 fade-in">
+                <div class="stat-item">
+                    <div class="stat-icon mb-3">
+                        <i class="fas fa-globe fa-2x"></i>
+                    </div>
+                    <div class="stat-number" data-target="25">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="display-4 fw-bold mb-3">Farmer Success Stories</h2>
+            <p class="lead text-muted">
+                Real experiences from farmers using AgroBot
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4 fade-in">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "AgroBot transformed my farming approach. The crop recommendations helped me
+                            increase my yield by 40% while reducing fertilizer costs."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle fa-2x text-agro-primary"></i>
+                        </div>
+                        <div class="author-info">
+                            <h6 class="mb-0">Ramesh Kumar</h6>
+                            <small class="text-muted">Wheat Farmer, Punjab</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 fade-in">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "The disease detection feature saved my entire rice crop. Early detection
+                            and treatment recommendations were spot on!"
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle fa-2x text-agro-primary"></i>
+                        </div>
+                        <div class="author-info">
+                            <h6 class="mb-0">Priya Sharma</h6>
+                            <small class="text-muted">Rice Farmer, Bihar</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 fade-in">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="stars mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "User-friendly interface and accurate recommendations. Even as a new farmer,
+                            I could make informed decisions confidently."
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-circle fa-2x text-agro-primary"></i>
+                        </div>
+                        <div class="author-info">
+                            <h6 class="mb-0">Amit Patel</h6>
+                            <small class="text-muted">Vegetable Farmer, Gujarat</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-agro-secondary text-white">
+    <div class="container text-center">
+        <div class="fade-in">
+            <h2 class="display-4 fw-bold mb-4">
+                Ready to Transform Your Farm?
+            </h2>
+            <p class="lead mb-4">
+                Join thousands of farmers using AI to optimize their agricultural practices
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('crop_recommend') }}" class="btn-agro btn-lg me-3">
+                    <i class="fas fa-rocket me-2"></i>
+                    Start Free Analysis
+                </a>
+                <a href="{{ url_for('disease_prediction') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-camera me-2"></i>
+                    Scan Plant Now
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Additional styles for homepage */
+.wave-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(46, 125, 50, 0.1);
+    border-radius: 15px;
+    transition: var(--transition-smooth);
+}
+
+.feature-icon:hover {
+    background: var(--primary-green);
+    color: var(--white) !important;
+    transform: scale(1.1);
+}
+
+.how-it-works-card {
+    padding: 2rem;
+    height: 100%;
+    transition: var(--transition-smooth);
+}
+
+.how-it-works-card:hover {
+    transform: translateY(-10px);
+}
+
+.step-icon {
+    position: relative;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-number {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    background: var(--accent-yellow);
+    color: var(--dark-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.stat-item {
+    padding: 2rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.testimonial-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    transition: var(--transition-smooth);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-text {
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    margin-right: 1rem;
+}
+
+.cta-buttons {
+    margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .testimonial-card {
+        margin-bottom: 1.5rem;
+    }
+}
+</style>
+
+<script>
+// Animated counter for statistics
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200; // Animation speed
+
+    const countUp = (counter) => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / speed;
+
+        if (count < target) {
+            counter.innerText = Math.ceil(count + increment);
+            setTimeout(() => countUp(counter), 10);
+        } else {
+            counter.innerText = target;
+            if (counter.getAttribute('data-target') === '95') {
+                counter.innerText += '%';
+            } else if (counter.getAttribute('data-target') === '25') {
+                counter.innerText += '+';
+            } else if (counter.getAttribute('data-target') === '10000') {
+                counter.innerText += '+';
+            }
+        }
+    };
+
+    // Start counting when element is visible
+    const observerOptions = {
+        threshold: 0.5
+    };
+
+    const counterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                countUp(entry.target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
+    });
+});
+</script>
 {% endblock %}
