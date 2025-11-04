@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: agrobot-smart-agriculture
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir App app:app --log-level debug --timeout 120 --workers 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: CLAUDE_API_KEY
+        sync: false
+      - key: WEATHER_API_KEY
+        sync: false
+    healthCheckPath: /
+    auto_stop_machines: true
+    auto_start_machines: true
+    min_machines_running: 0
+    processes: ["app"]
+
+# Environment Groups for sensitive configuration
+environmentGroups:
+  - name: AgroBot
+    envVars:
+      - key: CLAUDE_API_KEY
+        value: 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
+      - key: WEATHER_API_KEY
+        value: 9d7cde1f6d07ec55650544be1631307e
+
+    # Additional environment variables for AgroBot
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_TYPE
+        value: sqlite
+      - key: REDIS_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
