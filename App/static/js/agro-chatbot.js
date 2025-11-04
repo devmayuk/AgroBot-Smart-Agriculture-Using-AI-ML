@@ -1,7 +1,7 @@
 // AgroBot Agriculture Chatbot with Claude API Integration
 class AgroChatbot {
     constructor() {
-        this.apiKey = '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';
+        this.apiKey = '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';
         this.apiUrl = 'https://api.anthropic.com/v1/messages';
         this.isOpen = false;
         this.isTyping = false;
@@ -11,15 +11,15 @@ class AgroChatbot {
         this.init();
     }
 
+    generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
     init() {
         this.createChatbotHTML();
         this.setupEventListeners();
         this.loadMessageHistory();
         this.setupKeyboardShortcuts();
-    }
-
-    generateSessionId() {
-        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
     }
 
     createChatbotHTML() {
@@ -42,7 +42,7 @@ class AgroChatbot {
                     <div class="chatbot-header">
                         <div class="chatbot-header-left">
                             <div class="chatbot-avatar">
-                                <i class="fas fa-seedling"></i>
+                                <i class="fas fa-robot"></i>
                             </div>
                             <div class="chatbot-info">
                                 <h6 class="chatbot-name">AgroBot Assistant</h6>
@@ -70,7 +70,7 @@ class AgroChatbot {
                             <ul class="welcome-topics">
                                 <li>🌱 Crop recommendations</li>
                                 <li>🧪 Fertilizer advice</li>
-                                <li>🍃 Plant diseases</li>
+                                <li>🍃� Plant diseases</li>
                                 <li>💧 Irrigation tips</li>
                                 <li>🌾 Farming best practices</li>
                             </ul>
@@ -102,13 +102,16 @@ class AgroChatbot {
                             <i class="fas fa-microscope me-2"></i>
                             Disease Help
                         </button>
-                        <button class="quick-action-btn" onclick="agroChatbot.quickQuestion('What fertilizer should I use?')">
+                        <button>
+                            <button class="quick-action-btn" onclick="agroChatbot.quickQuestion('What fertilizer should I use?')">
                             <i class="fas fa-flask me-2"></i>
                             Fertilizer Tips
                         </button>
-                        <button class="quick-action-btn" onclick="agroChatbot.quickQuestion('When should I plant crops?')">
-                            <i class="fas fa-calendar me-2"></i>
-                            Planting Time
+                        <button>
+                            <button class="quick-action-btn" onclick="agroChatbot.quickQuestion('When should I plant crops?')">
+                                <i class="fas fa-calendar me-2"></i>
+                                Planting Time
+                            </button>
                         </button>
                     </div>
 
@@ -158,7 +161,6 @@ class AgroChatbot {
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
-                justify-content: center;
                 cursor: pointer;
                 box-shadow: 0 4px 20px rgba(46, 125, 50, 0.3);
                 transition: all 0.3s ease;
@@ -196,6 +198,7 @@ class AgroChatbot {
             @keyframes pulse {
                 0%, 100% { transform: scale(1); }
                 50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
             }
 
             .chatbot-container {
@@ -218,7 +221,7 @@ class AgroChatbot {
 
             .chatbot-container.active {
                 opacity: 1;
-                visibility: visible;
+                visibility: visibility: visible;
                 transform: translateY(0) scale(1);
             }
 
@@ -243,7 +246,7 @@ class AgroChatbot {
                 height: 40px;
                 background: rgba(255, 255, 255, 0.2);
                 border-radius: 50%;
-                display: flex;
+                display: display: flex;
                 align-items: center;
                 justify-content: center;
                 font-size: 18px;
@@ -279,83 +282,40 @@ class AgroChatbot {
                 transition: all 0.2s ease;
             }
 
-            .btn-icon:hover {
+            .btn-icon:hover:not(:disabled) {
                 background: rgba(255, 255, 255, 0.3);
                 transform: scale(1.1);
             }
 
-            .welcome-message {
-                padding: 20px;
-                background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(76, 175, 80, 0.05));
-                border-radius: 12px;
-                margin: 20px;
-                display: flex;
-                gap: 15px;
-                animation: slideInUp 0.5s ease;
+            .btn-icon:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
             }
 
-            @keyframes slideInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .welcome-avatar {
-                width: 50px;
-                height: 50px;
-                background: var(--primary-green);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 24px;
-                flex-shrink: 0;
-            }
-
-            .welcome-content h6 {
-                margin: 0 0 10px 0;
-                color: var(--primary-green);
-                font-size: 16px;
-                font-weight: 600;
-            }
-
-            .welcome-content p {
-                margin: 0 0 10px 0;
+            /* Loading states */
+            .error-message {
+                background: rgba(244, 67, 54, 0.1);
+                color: #d32f2f;
+                padding: 10px 15px;
+                border-radius: 10px;
                 font-size: 14px;
-                color: var(--medium-gray);
+                margin: 10px 20px;
+                border-left: 3px solid #f44336;
             }
 
-            .welcome-topics {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                font-size: 13px;
-                color: var(--medium-gray);
+            .success-message {
+                background: rgba(76, 175, 80, 0.1);
+                color: #2e7d32;
+                padding: 10px 15px;
+                border-radius: 10px;
+                font-size: 14px;
+                margin: 10px 20px;
+                border-left: 3px solid #4caf50;
             }
 
-            .welcome-topics li {
-                margin-bottom: 3px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .chat-messages {
-                flex: 1;
-                overflow-y: auto;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-            }
-
+            /* Message styles */
             .message {
+                max-width: 85%;
                 max-width: 85%;
                 animation: messageSlide 0.3s ease;
             }
@@ -369,21 +329,6 @@ class AgroChatbot {
                     opacity: 1;
                     transform: translateY(0);
                 }
-            }
-
-            .message.user {
-                align-self: flex-end;
-            }
-
-            .message.bot {
-                align-self: flex-start;
-            }
-
-            .message-bubble {
-                padding: 12px 16px;
-                border-radius: 18px;
-                word-wrap: break-word;
-                position: relative;
             }
 
             .message.user .message-bubble {
@@ -410,6 +355,7 @@ class AgroChatbot {
                 text-align: left;
             }
 
+            /* Typing indicator */
             .typing-indicator {
                 display: flex;
                 align-items: center;
@@ -440,6 +386,7 @@ class AgroChatbot {
                 height: 8px;
                 background: var(--medium-gray);
                 border-radius: 50%;
+                border-radius: 50%;
                 animation: typing 1.4s infinite ease-in-out;
             }
 
@@ -454,14 +401,18 @@ class AgroChatbot {
             @keyframes typing {
                 0%, 60%, 100% { transform: translateY(0); }
                 30% { transform: translateY(-10px); }
+                60% { transform: translateY(0); }
+                100% { transform: translateY(0); }
             }
 
+            /* Quick Actions */
             .quick-actions {
                 padding: 10px 20px;
                 border-top: 1px solid var(--light-gray);
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
+                margin: 10px 20px;
             }
 
             .quick-action-btn {
@@ -477,46 +428,34 @@ class AgroChatbot {
                 align-items: center;
                 justify-content: center;
                 gap: 4px;
-                text-decoration: none;
             }
 
             .quick-action-btn:hover {
                 background: var(--primary-green);
-                color: white;
+                color: var(--white);
                 border-color: var(--primary-green);
                 transform: translateY(-2px);
             }
 
-            .chat-input-container {
-                padding: 20px;
-                border-top: 1px solid var(--light-gray);
-                background: var(--white);
-                border-radius: 0 0 20px 20px;
-            }
-
-            .chat-input-wrapper {
-                display: flex;
-                gap: 10px;
-                align-items: flex-end;
-            }
-
+            /* Input styles */
             .chat-input {
                 flex: 1;
                 border: 2px solid var(--light-gray);
                 border-radius: 20px;
-                padding: 12px 16px;
                 font-size: 14px;
                 resize: none;
                 max-height: 100px;
                 transition: border-color 0.2s ease;
-                font-family: inherit;
+                font-family: 'Inter', sans-serif;
             }
 
             .chat-input:focus {
                 outline: none;
                 border-color: var(--primary-green);
+                box-shadow: 0 0 0 0 3px rgba(46, 125, 50, 0.1);
             }
 
+            /* Send button */
             .send-button {
                 width: 40px;
                 height: 40px;
@@ -541,6 +480,7 @@ class AgroChatbot {
                 cursor: not-allowed;
             }
 
+            /* Input footer */
             .chat-input-footer {
                 display: flex;
                 justify-content: space-between;
@@ -552,11 +492,6 @@ class AgroChatbot {
 
             /* Mobile Responsive */
             @media (max-width: 480px) {
-                .agro-chatbot {
-                    bottom: 20px;
-                    right: 20px;
-                }
-
                 .chatbot-container {
                     width: calc(100vw - 40px);
                     height: 70vh;
@@ -569,34 +504,64 @@ class AgroChatbot {
                     height: 50px;
                 }
 
-                .chatbot-toggle .chatbot-icon {
-                    font-size: 20px;
+                .chatbot-container {
+                    width: calc(100vw - 40px);
+                    height: 70vh;
+                    right: 20px;
+                    bottom: 80px;
                 }
 
-                .quick-actions {
-                    grid-template-columns: 1fr;
+                .chatbot-container {
+                    width: 100%;
+                    height: 70vh;
+                }
+
+                .chatbot-header {
+                    padding: 16px;
+                    border-radius: 16px 16px 0 0;
+                }
+
+                .chatbot-header-right {
+                    padding: 16px 16px 16px 0 0;
+                }
+
+                .chatbot-header-right .btn-icon {
+                    width: 28px;
+                    height: 28px;
+                }
+
+                .chatbot-header-left {
+                    display: flex;
+                    gap: 10px;
+                }
+
+                .chatbot-header .chatbot-name {
+                    font-size: 14px;
+                }
+
+                .chatbot-status {
+                    font-size: 10px;
+                }
+
+                .chatbot-header-right {
+                    display: flex;
+                    gap: 6px;
                 }
             }
 
-            /* Loading and Error States */
-            .error-message {
-                background: rgba(244, 67, 54, 0.1);
-                color: #d32f2f;
-                padding: 10px 15px;
-                border-radius: 10px;
-                font-size: 14px;
-                margin: 10px 20px;
-                border-left: 3px solid #f44336;
-            }
+            .quick-actions {
+                    grid-template-columns: 1fr 1fr;
+                }
 
-            .success-message {
-                background: rgba(76, 175, 80, 0.1);
-                color: #2e7d32;
-                padding: 10px 15px;
-                border-radius: 10px;
-                font-size: 14px;
-                margin: 10px 20px;
-                border-left: 3px solid #4caf50;
+                .quick-action-btn {
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                .quick-action-btn {
+                    padding: 8px 12px;
+                    font-size: 12px;
+                    grid-template-columns: 1fr 1fr;
+                }
             }
         `;
 
@@ -604,287 +569,165 @@ class AgroChatbot {
     }
 
     setupEventListeners() {
-        // Chat toggle
-        const toggle = document.getElementById('chatbotToggle');
-        if (toggle) {
-            toggle.addEventListener('click', () => this.toggleChat());
-        }
-
-        // Send button
-        const sendButton = document.getElementById('sendButton');
-        if (sendButton) {
-            sendButton.addEventListener('click', () => this.sendMessage());
-        }
-
-        // Enter key to send
-        const chatInput = document.getElementById('chatInput');
-        if (chatInput) {
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    this.sendMessage();
-                }
-            });
-
-            // Auto-resize textarea
-            chatInput.addEventListener('input', () => {
-                this.autoResizeTextarea(chatInput);
-            });
-        }
-
-        // Close on escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.isOpen) {
-                this.toggleChat();
+            // Chat toggle
+            const toggle = document.getElementById('chatbotToggle');
+            if (toggle) {
+                toggle.addEventListener('click', () => this.toggleChat());
             }
-        });
-    }
 
-    setupKeyboardShortcuts() {
-        // Ctrl/Cmd + / to open chat
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-                e.preventDefault();
-                if (!this.isOpen) {
+            // Send button
+            const sendButton = document.getElementById('sendButton');
+            if (sendButton) {
+                sendButton.addEventListener('click', () => this.sendMessage());
+            }
+
+            // Input field
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    } else if (e.key === 'Shift' && e.key === 'Enter') {
+                    e.preventDefault();
+                }
+                });
+
+                // Auto-resize textarea
+                chatInput.addEventListener('input', () => {
+                    this.autoResizeTextarea(chatInput);
+                });
+
+                // Auto-resize textarea
+                chatInput.addEventListener('input', () => {
+                    this.autoResizeTextarea(chatInput);
+                });
+            }
+
+            // Enter key shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isOpen) {
                     this.toggleChat();
                 }
-                document.getElementById('chatInput')?.focus();
-            }
-        });
-    }
+            });
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                const chatbot = document.getElementById('agroChatbot');
+                const navbar = document.querySelector('.agro-nav');
+                if (!navbar.contains(e.target) && chatbot.classList.contains('show')) {
+                    const navbar = document.querySelector('.navbar-collapse');
+                    if (navbar.classList.contains('show')) {
+                        bootstrap.Collapse.getInstance(navbar).hide();
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+        }
 
     autoResizeTextarea(textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
-    }
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 100);
+        }
 
-    toggleChat() {
-        const container = document.getElementById('chatbotContainer');
-        const toggle = document.getElementById('chatbotToggle');
-
-        this.isOpen = !this.isOpen;
-
-        if (this.isOpen) {
-            container.classList.add('active');
-            toggle.style.display = 'none';
-            document.getElementById('chatInput')?.focus();
-
-            // Hide welcome message after first interaction
-            const welcomeMsg = document.getElementById('welcomeMessage');
-            if (welcomeMsg && this.conversationStarted) {
-                welcomeMsg.style.display = 'none';
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.ctrlKey && e.key === '/') {
+                    e.preventDefault();
+                    document.getElementById('chatInput')?.focus();
+                } else if (e.metaKey && (e.metaKey === 'k' || e.metaKey === 'K') && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById('chatInput')?.focus();
+                }
             }
-        } else {
-            container.classList.remove('active');
-            toggle.style.display = 'flex';
-        }
+        });
     }
 
-    async sendMessage() {
-        const input = document.getElementById('chatInput');
-        const message = input.value.trim();
-
-        if (!message || this.isTyping) return;
-
-        // Add user message
-        this.addMessage(message, 'user');
-
-        // Clear input
-        input.value = '';
-        this.autoResizeTextarea(input);
-
-        // Mark conversation as started
-        this.conversationStarted = true;
-
-        // Hide welcome message
-        const welcomeMsg = document.getElementById('welcomeMessage');
-        if (welcomeMsg) {
-            welcomeMsg.style.display = 'none';
-        }
-
-        // Hide quick actions
-        const quickActions = document.getElementById('quickActions');
-        if (quickActions) {
-            quickActions.style.display = 'none';
-        }
-
-        // Show typing indicator
-        this.showTypingIndicator();
-
-        try {
-            const response = await this.callClaudeAPI(message);
-            this.hideTypingIndicator();
-            this.addMessage(response, 'bot');
-        } catch (error) {
-            this.hideTypingIndicator();
-            this.addMessage('Sorry, I encountered an error. Please try again later.', 'bot', true);
-            console.error('Chatbot API error:', error);
-        }
-    }
-
-    async callClaudeAPI(message) {
-        const systemPrompt = `You are AgroBot, a friendly and knowledgeable agriculture assistant. You help farmers and gardeners with:
-
-        - Crop recommendations based on soil conditions, climate, and region
-        - Fertilizer advice and soil management tips
-        - Plant disease identification and treatment suggestions
-        - Irrigation and water management guidance
-        - Planting schedules and seasonal advice
-        - Organic farming practices
-        - Pest control methods
-        - Modern farming technology guidance
-
-        Guidelines:
-        - Be helpful, encouraging, and practical
-        - Ask clarifying questions if needed
-        - Provide specific, actionable advice
-        - Consider Indian agricultural context
-        - Be concise but thorough
-        - Use friendly, conversational tone
-        - Include relevant emojis when appropriate 🌾🌱🧪💧
-
-        Always respond in the same language as the user's message. If the message is in English, respond in English.`;
-
-        const conversation = [
-            {
-                role: 'user',
-                content: message
-            }
-        ];
-
-        // Add some context if this is a new conversation
-        if (this.messageHistory.length === 0) {
-            conversation.unshift({
-                role: 'user',
-                content: 'Hello! I need help with farming advice.'
-            });
-            conversation.unshift({
-                role: 'assistant',
-                content: 'Hello! I\'m AgroBot, your agriculture assistant. I\'d be happy to help you with crop recommendations, fertilizer advice, plant disease management, irrigation tips, and any other farming-related questions. What would you like to know about? 🌾'
+        // Mobile menu enhancements
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+        if (navbarToggler && navbarCollapse) {
+            navbarToggler.addEventListener('click', function() {
+                setTimeout(() => {
+                    if (navbarCollapse.classList.contains('show')) {
+                    document.body.style.overflow = 'hidden';
+                }
+                }, 100);
             });
         }
-
-        try {
-            const response = await fetch(this.apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': this.apiKey,
-                    'anthropic-version': '2023-06-01'
-                },
-                body: JSON.stringify({
-                    model: 'claude-3-haiku-20240307',
-                    max_tokens: 500,
-                    system: systemPrompt,
-                    messages: conversation,
-                    temperature: 0.7
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data.content[0].text;
-        } catch (error) {
-            console.error('Claude API Error:', error);
-            throw error;
-        }
     }
 
-    addMessage(text, sender, isError = false) {
-        const messagesContainer = document.getElementById('chatMessages');
-        if (!messagesContainer) return;
-
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${sender}`;
-
-        const timestamp = new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
         });
 
-        const errorClass = isError ? ' error-message' : '';
+            // Enhanced form field interactions
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.classList.add('focused');
+                });
 
-        messageDiv.innerHTML = `
-            <div class="message-bubble${errorClass}">
-                ${text}
-                <div class="message-time">${timestamp}</div>
-            </div>
-        `;
+                input.addEventListener('blur', () => {
+                    if (!input.value) {
+                        input.parentElement.classList.remove('focused');
+                    }
+                });
 
-        messagesContainer.appendChild(messageDiv);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                input.addEventListener('input', () => {
+                    const min = parseFloat(input.min) || 0;
+                    const max = parseFloat(input.max) || 999999;
+                    const value = parseFloat(input.value);
+                    if (value < min || value > max) {
+                        this.classList.add('is-invalid');
+                    } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+                });
+            });
+        });
+    }
 
-        // Store in history
-        this.messageHistory.push({
-            text: text,
-            sender: sender,
-            timestamp: timestamp,
-            isError: isError
+        // Location system integration
+        if (typeof agroLocation !== 'undefined') {
+            agroLocation.onLocationChange(function(location) {
+            console.log('Location updated:', location);
         });
 
-        // Save to localStorage
-        this.saveMessageHistory();
-    }
+            // Update form fields
+            const cityInput = document.getElementById('city');
+            const stateInput = document.getElementById('stt');
 
-    showTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) {
-            indicator.style.display = 'flex';
-            this.isTyping = true;
-        }
-    }
-
-    hideTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) {
-            indicator.style.display = 'none';
-            this.isTyping = false;
-        }
-    }
-
-    quickQuestion(question) {
-        if (!this.isOpen) {
-            this.toggleChat();
-        }
-
-        const input = document.getElementById('chatInput');
-        if (input) {
-            input.value = question;
-            this.sendMessage();
-        }
-    }
-
-    clearChat() {
-        if (confirm('Are you sure you want to clear the chat history?')) {
-            const messagesContainer = document.getElementById('chatMessages');
-            if (messagesContainer) {
-                messagesContainer.innerHTML = '';
+            if (cityInput && stateInput && location && location.city) {
+                cityInput.value = location.city;
             }
-
-            this.messageHistory = [];
-            this.conversationStarted = false;
-            this.sessionId = this.generateSessionId();
-
-            // Show welcome message again
-            const welcomeMsg = document.getElementById('welcomeMessage');
-            if (welcomeMsg) {
-                welcomeMsg.style.display = 'flex';
+            if (stateInput && location && location.state) {
+                stateInput.value = location.state;
             }
-
-            // Show quick actions
-            const quickActions = document.getElementById('quickActions');
-            if (quickActions) {
-                quickActions.style.display = 'grid';
-            }
-
-            // Show success message
-            this.addMessage('Chat history cleared! How can I help you today?', 'bot');
-
-            this.saveMessageHistory();
+        });
         }
+
+        // Auto-resize for messages
+        window.addEventListener('resize', () => {
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                this.autoResizeTextarea(chatInput);
+            }
+        });
+    }
+
+        // Save message history to localStorage
+        window.addEventListener('beforeunload', () => {
+            if (this.messageHistory.length > 0) {
+                this.saveMessageHistory();
+            }
+        });
     }
 
     saveMessageHistory() {
@@ -892,6 +735,7 @@ class AgroChatbot {
             localStorage.setItem('agroChatbotHistory', JSON.stringify({
                 messages: this.messageHistory,
                 sessionId: this.sessionId,
+                timestamp: Date.now(),
                 timestamp: Date.now()
             }));
         } catch (error) {
@@ -904,33 +748,288 @@ class AgroChatbot {
             const saved = localStorage.getItem('agroChatbotHistory');
             if (saved) {
                 const data = JSON.parse(saved);
-
-                // Check if session is recent (within 24 hours)
-                const isRecent = Date.now() - data.timestamp < 24 * 60 * 60 * 1000;
-
-                if (isRecent && data.messages && data.messages.length > 0) {
-                    this.messageHistory = data.messages;
-                    this.sessionId = data.sessionId;
-
-                    // Restore messages (except the last bot message to show freshness)
-                    const messagesToRestore = data.messages.slice(0, -1);
-                    messagesToRestore.forEach(msg => {
-                        this.addMessage(msg.text, msg.sender, msg.isError);
-                    });
-
-                    if (messagesToRestore.length > 0) {
-                        this.conversationStarted = true;
-
-                        // Hide welcome message if we have history
-                        const welcomeMsg = document.getElementById('welcomeMessage');
-                        if (welcomeMsg) {
-                            welcomeMsg.style.display = 'none';
-                        }
-                    }
-                }
+                this.messageHistory = data.messages || [];
+                this.sessionId = data.sessionId;
+                this.conversationStarted = data.timestamp ? (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) : false;
             }
         } catch (error) {
-            console.error('Failed to load chat history:', error);
+            this.messageHistory = [];
+            this.sessionId = this.generateSessionId();
+            this.conversationStarted = false;
+        }
+
+        if (this.conversationStarted && this.messageHistory.length > 0) {
+            this.restoreMessageHistory();
+        }
+    }
+
+        restoreMessageHistory() {
+            if (this.conversationStarted && this.messageHistory.length > 0) {
+                const lastMessage = this.messageHistory[this.messageHistory.length - 1];
+                if (lastMessage) {
+                    this.addMessage(lastMessage.text, lastMessage.sender, lastMessage.isError);
+                }
+            }
+        }
+    }
+
+        addMessage(text, sender, isError = false) {
+            const messagesContainer = document.getElementById('chatMessages');
+            if (!messagesContainer) return;
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const timestamp = new Date().toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            const messageDiv.innerHTML = `
+                <div class="message-bubble ${isError ? 'error-message' : ''}">
+                    ${text}
+                    <div class="message-time">${timestamp}</div>
+                </div>
+            `;
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Store in history
+            this.messageHistory.push({
+                text: text,
+                sender: sender,
+                timestamp: timestamp,
+                isError: isError
+            });
+
+            // Save to localStorage
+            this.saveMessageHistory();
+
+            // Trigger back to top after message
+            if (sender === 'bot') {
+                setTimeout(() => {
+                    document.getElementById('backToTop').style.display = 'none';
+                }, 1000);
+            }
+        }
+
+        }
+
+        // Quick question handling
+        quickQuestion(question) {
+            if (!this.isOpen) {
+                this.toggleChat();
+            }
+
+            if (!this.conversationStarted) {
+                this.conversationStarted = true;
+            }
+
+            if (this.isTyping) return;
+
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.value = question;
+                this.sendMessage();
+            }
+        }
+
+        clearChat() {
+            if (this.messageHistory.length === 0) return;
+
+            if (confirm('Are you sure you want to clear all chat history?')) {
+                this.messageHistory = [];
+                this.conversationStarted = false;
+                this.sessionId = this.generateSessionId();
+                this.saveMessageHistory();
+                this.displaySuccessMessage('Chat history cleared successfully!');
+            }
+
+            // Hide welcome message
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            if (welcomeMsg) {
+                welcomeMsg.style.display = 'none';
+            }
+
+            // Show welcome message again
+            const quickActions = document.getElementById('quickActions');
+            if (quickActions) {
+                quickActions.style.display = 'grid';
+            }
+
+            // Hide typing indicator
+            this.hideTypingIndicator();
+        }
+
+        showSuccessMessage(message) {
+            const messagesContainer = document.getElementById('chatMessages');
+            if (messagesContainer) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'alert alert-success';
+                messageDiv.style.margin = '10px';
+                messageDiv.textContent = message;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        displaySuccessMessage(message) {
+            const successMessage = `
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i>
+                    ${message}
+                </div>
+            `;
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = successMessage;
+            document.body.appendChild(messageDiv);
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+        }
+
+        displayErrorMessage(message) {
+            const errorMessage = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    ${message}
+                </div>
+            `;
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = errorMessage;
+            document.body.appendChild(messageDiv);
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+        }
+    }
+
+        // Update display based on conversation state
+        updateConversationDisplay() {
+            if (this.conversationStarted && this.messageHistory.length > 0) {
+                // Show chat container
+                const container = document.getElementById('chatbotContainer');
+                if (container) {
+                    container.classList.add('active');
+                    container.style.display = 'flex';
+                    container.style.opacity = '1';
+                    container.style.visibility = 'visible';
+                }
+                container.style.position = 'absolute';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+                container.visibility = 'visible';
+            }
+            } else {
+                // Hide chat container
+                const container = document.getElementById('chatbotContainer');
+                if (container) {
+                    container.classList.remove('active');
+                    container.style.display = 'none';
+                    container.style.opacity = '0';
+                    container.style.visibility = 'hidden';
+                }
+            }
+
+            // Show chat container if there are messages or if conversation started
+            const container = document.getElementById('chatbotContainer');
+            const messagesContainer = document.getElementById('chatMessages');
+            if ((messagesContainer && messagesContainer.children.length > 0) || this.conversationStarted) {
+                container.style.display = 'flex';
+                container.style.opacity = '1';
+                container.style.visibility = 'visible';
+                container.style.position = 'relative';
+                container.style.opacity = '1';
+                container.style.visibility = 'visible';
+            } else {
+                container.style.display = 'none';
+            }
+        }
+    }
+
+        // Auto-scroll chat to latest message
+        const messagesContainer = document.getElementById('chatMessages');
+        if (messagesContainer && messagesContainer.children.length > 0) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    }
+
+        // Initialize display based on conversation state
+        this.updateConversationDisplay();
+    }
+
+    // Update display based on conversation state
+        this.updateConversationDisplay();
+    }
+
+        // Quick question handling
+        quickQuestion(question) {
+            // This method will be connected to the quick action buttons
+            if (!this.conversationStarted) {
+                this.conversationStarted = true;
+            }
+
+            if (!this.isTyping) return;
+
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.value = question;
+                this.sendMessage();
+            }
+        }
+
+        // Clear chat functionality
+        clearChat() {
+            if (this.messageHistory.length > 0) {
+                // Store in localStorage
+                this.saveMessageHistory();
+                this.messageHistory = [];
+                this.conversationStarted = false;
+                this.sessionId = this.generateSessionId();
+            }
+        }
+
+        // Update display based on conversation state
+        updateConversationDisplay() {
+            const container = document.getElementById('chatbotContainer');
+            const messagesContainer = document.getElementById('chatMessages');
+            if (!messagesContainer || !this.conversationStarted) {
+                return;
+            }
+
+            // Show chat container if there are messages
+            container.style.display = 'flex';
+            container.style.opacity = '1';
+            container.style.visibility = 'visible';
+            container.style.position = 'relative';
+            container.style.opacity = '1';
+
+            // Hide chat container if no messages and conversation not started
+            if (!messagesContainer || messagesContainer.children.length === 0) {
+                container.style.display = 'none';
+            }
+        }
+
+        // Show/hide chat based on conversation state
+        const toggle = document.getElementById('chatbotToggle');
+        const container = document.getElementById('chatbotContainer');
+        if (toggle && container) {
+            container.classList.toggle('active');
+        }
+        }
+    }
+
+    // Initialize display
+        this.updateConversationDisplay();
+    }
+
+    // Initialize tooltips
+        if (typeof bootstrap !== 'undefined' && typeof bootstrap !== 'undefined') {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
         }
     }
 }
@@ -939,3 +1038,8 @@ class AgroChatbot {
 document.addEventListener('DOMContentLoaded', () => {
     window.agroChatbot = new AgroChatbot();
 });
+
+// Export for global access
+window.agroChatbot = new AgroChatbot();
+})();
+</script>
