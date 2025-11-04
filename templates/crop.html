@@ -1,137 +1,715 @@
-{% extends 'layout.html' %} {% block body %}
+{% extends 'layout.html' %}
+
+{% block body %}
+<!-- Page Header -->
+<section class="page-header bg-agro-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="fade-in">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="fas fa-seedling me-3"></i>
+                        Crop Recommendation
+                    </h1>
+                    <p class="lead mb-0">
+                        Get personalized crop suggestions based on your soil conditions, climate,
+                        and local weather patterns. Our AI analyzes multiple factors to recommend
+                        the most profitable and sustainable crops for your farm.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="header-icon fade-in">
+                    <i class="fas fa-leaf fa-5x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Form Section -->
+            <div class="col-lg-6 mb-4">
+                <div class="modern-form fade-in">
+                    <div class="form-header">
+                        <h3 class="form-title">
+                            <i class="fas fa-flask me-2 text-agro-primary"></i>
+                            Analyze Your Farm Data
+                        </h3>
+                        <p class="form-subtitle">
+                            Fill in your soil and environmental conditions
+                        </p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('crop_prediction') }}" id="cropForm">
+                        <!-- Location Section -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt me-2 text-agro-primary"></i>
+                                Location
+                                <span class="text-muted small">(Required for weather data)</span>
+                            </label>
+
+                            <div id="locationContainer">
+                                <!-- Location will be populated here by JavaScript -->
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-agro-primary mb-3" role="status">
+                                        <span class="visually-hidden">Detecting location...</span>
+                                    </div>
+                                    <h5 class="text-agro-primary">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        Detecting your location...
+                                    </h5>
+                                    <p class="text-muted">Please allow location access for accurate weather data</p>
+                                </div>
+                            </div>
+
+                            <div id="locationDisplay" style="display: none;"></div>
+                        </div>
+
+                        <!-- Nitrogen -->
+                        <div class="form-group">
+                            <label for="nitrogen" class="form-label">
+                                <i class="fas fa-vial me-2 text-agro-primary"></i>
+                                Nitrogen Level (N)
+                                <span class="text-muted small">(0-140 kg/ha)</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="nitrogen"
+                                       name="nitrogen"
+                                       placeholder="e.g., 50"
+                                       min="0"
+                                       max="140"
+                                       step="1"
+                                       required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Nitrogen is essential for leaf growth"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                Most crops need 50-100 kg/ha for optimal growth
+                            </div>
+                        </div>
+
+                        <!-- Phosphorous -->
+                        <div class="form-group">
+                            <label for="phosphorous" class="form-label">
+                                <i class="fas fa-vial me-2 text-agro-secondary"></i>
+                                Phosphorous Level (P)
+                                <span class="text-muted small">(0-145 kg/ha)</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="phosphorous"
+                                       name="phosphorous"
+                                       placeholder="e.g., 30"
+                                       min="0"
+                                       max="145"
+                                       step="1"
+                                       required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Phosphorous promotes root development"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                Good for root development and flowering
+                            </div>
+                        </div>
+
+                        <!-- Potassium -->
+                        <div class="form-group">
+                            <label for="pottasium" class="form-label">
+                                <i class="fas fa-vial me-2 text-agro-accent"></i>
+                                Potassium Level (K)
+                                <span class="text-muted small">(0-205 kg/ha)</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="pottasium"
+                                       name="pottasium"
+                                       placeholder="e.g., 40"
+                                       min="0"
+                                       max="205"
+                                       step="1"
+                                       required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Potassium improves disease resistance"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                Helps plants fight diseases and stress
+                            </div>
+                        </div>
+
+                        <!-- pH Level -->
+                        <div class="form-group">
+                            <label for="ph" class="form-label">
+                                <i class="fas fa-tint me-2 text-info"></i>
+                                Soil pH Level
+                                <span class="text-muted small">(0-14)</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="ph"
+                                       name="ph"
+                                       placeholder="e.g., 6.5"
+                                       min="0"
+                                       max="14"
+                                       step="0.1"
+                                       required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="pH affects nutrient availability"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                Most crops prefer pH between 6.0-7.5
+                            </div>
+                        </div>
+
+                        <!-- Rainfall -->
+                        <div class="form-group">
+                            <label for="rainfall" class="form-label">
+                                <i class="fas fa-cloud-rain me-2 text-water-blue"></i>
+                                Annual Rainfall
+                                <span class="text-muted small">(0-300 mm)</span>
+                            </label>
+                            <div class="input-group">
+                                <input type="number"
+                                       class="form-control"
+                                       id="rainfall"
+                                       name="rainfall"
+                                       placeholder="e.g., 1000"
+                                       min="0"
+                                       max="300"
+                                       step="1"
+                                       required>
+                                <span class="input-group-text">
+                                    <i class="fas fa-info-circle" data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                       title="Annual rainfall in millimeters"></i>
+                                </span>
+                            </div>
+                            <div class="form-text">
+                                <i class="fas fa-lightbulb text-warning"></i>
+                                Consider average rainfall for your region
+                            </div>
+                        </div>
+
+                        <!-- Hidden location fields for form submission -->
+                        <input type="hidden" id="stt" name="stt" value="">
+                        <input type="hidden" id="city" name="city" value="">
+
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn-agro btn-lg px-5" id="submitBtn" data-original-text="Get Recommendations">
+                                <i class="fas fa-search me-2"></i>
+                                Get Crop Recommendations
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="col-lg-6 mb-4">
+                <div class="info-section fade-in">
+                    <!-- What We Analyze -->
+                    <div class="info-card mb-4">
+                        <h4 class="card-title mb-3">
+                            <i class="fas fa-microscope me-2 text-agro-primary"></i>
+                            What We Analyze
+                        </h4>
+                        <ul class="analysis-list">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Soil Nutrients:</strong> NPK levels and pH balance
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Climate Data:</strong> Temperature, humidity, rainfall patterns
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Geographic Factors:</strong> Regional growing conditions
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Crop Compatibility:</strong> Suitability for your specific conditions
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Tips Section -->
+                    <div class="info-card mb-4">
+                        <h4 class="card-title mb-3">
+                            <i class="fas fa-lightbulb me-2 text-agro-accent"></i>
+                            Pro Tips
+                        </h4>
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-seedling"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <strong>Test Your Soil:</strong> Get accurate soil test results for best recommendations
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <strong>Consider Rotation:</strong> Think about crop rotation for long-term soil health
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="tip-content">
+                                    <strong>Seasonal Planning:</strong> Plan according to growing seasons in your region
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Crops Info -->
+                    <div class="info-card">
+                        <h4 class="card-title mb-3">
+                            <i class="fas fa-star me-2 text-warning"></i>
+                            Popular Crop Recommendations
+                        </h4>
+                        <div class="popular-crops">
+                            <div class="crop-item">
+                                <span class="crop-icon">🌾</span>
+                                <span class="crop-name">Rice</span>
+                                <span class="crop-suitability">Best for wet regions</span>
+                            </div>
+                            <div class="crop-item">
+                                <span class="crop-icon">🌽</span>
+                                <span class="crop-name">Maize</span>
+                                <span class="crop-suitability">Versatile choice</span>
+                            </div>
+                            <div class="crop-item">
+                                <span class="crop-icon">🌾</span>
+                                <span class="crop-name">Wheat</span>
+                                <span class="crop-suitability">Cool climate</span>
+                            </div>
+                            <div class="crop-item">
+                                <span class="crop-icon">🥔</span>
+                                <span class="crop-name">Potato</span>
+                                <span class="crop-suitability">High yield</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How Results Work -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h3 class="display-5 fw-bold">
+                <i class="fas fa-chart-pie me-2 text-agro-primary"></i>
+                How Our Recommendations Work
+            </h3>
+            <p class="lead text-muted">
+                Our AI analyzes your data to provide personalized crop suggestions
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 text-center fade-in">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-database fa-3x text-agro-primary"></i>
+                    </div>
+                    <h5>Data Input</h5>
+                    <p class="text-muted">Your soil and location data</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center fade-in">
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-cloud-sun fa-3x text-agro-secondary"></i>
+                    </div>
+                    <h5>Weather Analysis</h5>
+                    <p class="text-muted">Real-time climate data</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center fade-in">
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-brain fa-3x text-agro-accent"></i>
+                    </div>
+                    <h5>AI Processing</h5>
+                    <p class="text-muted">Machine learning analysis</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center fade-in">
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon-large mb-3">
+                        <i class="fas fa-seedling fa-3x text-success"></i>
+                    </div>
+                    <h5>Recommendations</h5>
+                    <p class="text-muted">Personalized crop suggestions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include Location System -->
+<script src="{{ url_for('static', filename='js/location-system.js') }}"></script>
 
 <style>
+.page-header {
+    position: relative;
+    overflow: hidden;
+}
 
-    html body {
-      background-color: rgb(206, 206, 228);
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1574944990476-2392e35b866a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80') center/cover;
+    opacity: 0.1;
+    z-index: 0;
+}
 
-      
-  }
+.page-header .container {
+    position: relative;
+    z-index: 1;
+}
 
-  
+.header-icon {
+    opacity: 0.8;
+    transition: var(--transition-bounce);
+}
+
+.header-icon:hover {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+.modern-form {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--dark-gray);
+}
+
+.form-text {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.info-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    transition: var(--transition-smooth);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.analysis-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.analysis-list li:last-child {
+    border-bottom: none;
+}
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(46, 125, 50, 0.05);
+    border-radius: 10px;
+    transition: var(--transition-smooth);
+}
+
+.tip-item:hover {
+    background: rgba(46, 125, 50, 0.1);
+}
+
+.tip-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-green);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.tip-content {
+    flex: 1;
+}
+
+.tip-content strong {
+    color: var(--primary-green);
+}
+
+.popular-crops {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.crop-item {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(46, 125, 50, 0.05);
+    border-radius: 10px;
+    transition: var(--transition-smooth);
+}
+
+.crop-item:hover {
+    background: rgba(46, 125, 50, 0.1);
+    transform: translateY(-3px);
+}
+
+.crop-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.crop-name {
+    font-weight: 600;
+    color: var(--dark-gray);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.crop-suitability {
+    font-size: 0.875rem;
+    color: var(--medium-gray);
+}
+
+.process-step {
+    padding: 2rem;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.process-step:hover {
+    transform: translateY(-10px);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background: var(--accent-yellow);
+    color: var(--dark-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+}
+
+.step-icon-large {
+    margin-bottom: 1rem;
+}
+
+/* Location System Styles */
+.location-manual {
+    margin: 1rem 0;
+}
+
+.popular-cities-quick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-outline-agro {
+    border: 1px solid var(--primary-green);
+    color: var(--primary-green);
+    background: transparent;
+}
+
+.btn-outline-agro:hover {
+    background: var(--primary-green);
+    color: var(--white);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 2rem 0;
+    }
+
+    .header-icon {
+        margin-top: 2rem;
+    }
+
+    .modern-form {
+        margin: 1rem;
+    }
+
+    .process-step {
+        margin-bottom: 1rem;
+    }
+}
 </style>
-<!--Form Section-->
-<br /><br />
-<h2 style="text-align: center; margin: 0px; color: black">
-  <b>Find out the most suitable crop to grow in your farm</b>
-</h2>
-<br />
 
-<div
-  style="
-    width: 350px;
-    height: 50rem;
-    margin: 0px auto;
-    color: black;
-    border-radius: 25px;
-    padding: 10px 10px;
-  "
->
-  <form method="POST" action="{{ url_for('crop_prediction') }}">
-    <div class="form-group">
-      <label for="Nitrogen" style="font-size: 17px"><b>Nitrogen</b></label>
-      <input
-        type="number"
-        class="form-control"
-        id="Nitrogen"
-        name="nitrogen"
-        placeholder="Enter the value (example:50)"
-        style="font-weight: bold"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="Phosphorous" style="font-size: 17px"
-        ><b>Phosphorous</b></label
-      >
-      <input
-        type="number"
-        class="form-control"
-        id="Phosphorous"
-        name="phosphorous"
-        placeholder="Enter the value (example:50)"
-        style="font-weight: bold"
-        required
-      />
-    </div>
+<script>
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
-    <div class="form-group">
-      <label for="Pottasium" style="font-size: 17px"><b>Pottasium</b></label>
-      <input
-        type="number"
-        class="form-control"
-        id="Pottasium"
-        name="pottasium"
-        placeholder="Enter the value (example:50)"
-        style="font-weight: bold"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="ph" style="font-size: 17px"><b>ph level</b></label>
-      <input
-        type="number"
-        step="0.01"
-        class="form-control"
-        id="ph"
-        name="ph"
-        placeholder="Enter the value"
-        style="font-weight: bold"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="Rainfall" style="font-size: 17px"><b>Rainfall (in mm)</b></label>
-      <input
-        type="number"
-        step="0.01"
-        class="form-control"
-        id="Rainfall"
-        name="rainfall"
-        placeholder="Enter the value"
-        style="font-weight: bold"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="State" style="font-size: 17px "><b>State</b></label>
-      <select
-        onchange="print_city('state', this.selectedIndex);"
-        id="sts"
-        name="stt"
-        class="form-control"
-        style="font-weight: bold; color: black;"
-        
-        required
-      ></select>
-      <br />
-      <label for="City" style="font-size: 17px"><b>City</b></label>
-      <select
-        id="state"
-        class="form-control"
-        name="city"
-        style="font-weight: bold; color: black;"
-        required
-      ></select>
-      <script language="javascript">
-        print_state("sts");
-      </script>
-    </div>
+    // Form validation
+    const form = document.getElementById('cropForm');
+    const submitBtn = document.getElementById('submitBtn');
 
-    <div class="d-flex justify-content-center">
-      <button
-        type="submit"
-        class="btn btn-info"
-        style="color: black; font-weight: bold; width: 130px; height:50px; border-radius:12px; font-size: 21px;"
-      >
-        Predict
-      </button>
-    </div>
-  </form>
-</div>
+    form.addEventListener('submit', function(e) {
+        // Check if location is set
+        const location = agroLocation.getCurrentLocation();
+        if (!location || !location.city) {
+            alert('Please set your location first using the location selector above.');
+            e.preventDefault();
+            return;
+        }
 
+        // Validate ranges
+        const nitrogen = parseFloat(document.getElementById('nitrogen').value);
+        const phosphorous = parseFloat(document.getElementById('phosphorous').value);
+        const potassium = parseFloat(document.getElementById('pottasium').value);
+        const ph = parseFloat(document.getElementById('ph').value);
+        const rainfall = parseFloat(document.getElementById('rainfall').value);
 
+        // Simple validation
+        if (nitrogen < 0 || nitrogen > 140) {
+            alert('Nitrogen should be between 0 and 140 kg/ha');
+            e.preventDefault();
+            return;
+        }
 
-<!-- Form section -->
+        if (phosphorous < 0 || phosphorous > 145) {
+            alert('Phosphorous should be between 0 and 145 kg/ha');
+            e.preventDefault();
+            return;
+        }
+
+        if (potassium < 0 || potassium > 205) {
+            alert('Potassium should be between 0 and 205 kg/ha');
+            e.preventDefault();
+            return;
+        }
+
+        if (ph < 0 || ph > 14) {
+            alert('pH should be between 0 and 14');
+            e.preventDefault();
+            return;
+        }
+
+        if (rainfall < 0 || rainfall > 300) {
+            alert('Rainfall should be between 0 and 300 mm');
+            e.preventDefault();
+            return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...';
+    });
+
+    // Input field interactions
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+
+        input.addEventListener('blur', function() {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+
+        // Real-time validation feedback
+        input.addEventListener('input', function() {
+            const min = parseFloat(this.min);
+            const max = parseFloat(this.max);
+            const value = parseFloat(this.value);
+
+            if (value < min || value > max) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    });
+
+    // Location system integration
+    if (typeof agroLocation !== 'undefined') {
+        agroLocation.onLocationChange(function(location) {
+            console.log('Location updated:', location);
+        });
+    }
+});
+</script>
 
 {% endblock %}
